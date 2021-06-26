@@ -1,0 +1,25 @@
+{
+  "name": "snow/apple",
+  "type": "library",
+  "description": "这是一个Apple SDK.",
+  "minimum-stability": "stable",
+  "keywords": ["Apple SDK", "Apple technologies", "Apple Search Ads"],
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "zhaoy",
+      "email": "zhaoyang.12@qq.com"
+    }
+  ],
+  "require": {
+    "php" : ">=7.2",
+    "firebase/php-jwt": "^5.4",
+    "guzzlehttp/guzzle": "^7.3",
+    "ext-json": "*"
+  },
+  "autoload" : {
+    "psr-4" : {
+      "Snow\\Apple\\" : "src"
+    }
+  }
+}
