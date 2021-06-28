@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Snow\Technology\SearchAds;
+namespace Snow\Apple\Technology\SearchAds;
 
 
 class SearchAdsException extends \Exception

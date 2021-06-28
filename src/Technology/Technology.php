@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Snow\Technology;
+namespace Snow\Apple\Technology;
 
 
 use Snow\Apple\AppleInterface;
 use Snow\Apple\TraitGuzzleRetry;
-use Snow\Technology\SearchAds\MeDetail;
+use Snow\Apple\Technology\SearchAds\MeDetail;
 
 abstract class Technology implements TechnologyInterface
 {
@@ -68,5 +68,5 @@ abstract class Technology implements TechnologyInterface
         $this->option = array_merge($this->option, $option);
     }
 
-    abstract function execute(...$params);
+    abstract public function execute(...$params);
 }

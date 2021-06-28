@@ -3,9 +3,9 @@
 namespace Snow\Apple;
 
 use Firebase\JWT\JWT;
-use Snow\Technology\AuthInterface;
-use Snow\Technology\Oauth2Token;
-use Snow\Technology\TechnologyInterface;
+use Snow\Apple\Technology\AuthInterface;
+use Snow\Apple\Technology\Oauth2Token;
+use Snow\Apple\Technology\TechnologyInterface;
 
 class Apple implements AppleInterface
 {
@@ -57,9 +57,15 @@ class Apple implements AppleInterface
         $this->auth = new Oauth2Token($this);
     }
 
+    /**
+     * Notes: 获取JWT
+     * @param int|null $expirationTimestamp
+     * @param bool $force
+     * @return string
+     */
     public function getJwt(int $expirationTimestamp = null, bool $force = false): string
     {
-        if ($force || is_null($this->jwt) || $this->expirationTimestamp >= time()) {
+        if ($force || is_null($this->jwt) || $this->expirationTimestamp - 100 >= time()) {
             $this->issuedAtTimestamp = time();
             $this->expirationTimestamp = $expirationTimestamp ?: $this->issuedAtTimestamp + 86400 * 180;
             $headers = [
@@ -95,6 +101,13 @@ class Apple implements AppleInterface
         return $this->auth;
     }
 
+    /**
+     * Notes: 注册ASA服务
+     * @param string $technology
+     * @param array $option
+     * @return mixed|TechnologyInterface
+     * @throws AppleException
+     */
     public function technology(string $technology, array $option = [])
     {
         if (!isset($this->technologies[$technology])) {
@@ -114,11 +127,24 @@ class Apple implements AppleInterface
         return $this->technologies[$technology];
     }
 
+    /**
+     * Notes: 快速执行ASA服务
+     * @param string $technology
+     * @param mixed ...$params
+     * @return mixed
+     * @throws AppleException
+     */
     public function execute(string $technology, ...$params)
     {
         return $this->technology($technology)->execute(...$params);
     }
 
+    /**
+     * Notes: 快速存取全局数据
+     * @param string $key
+     * @param mixed $value
+     * @return mixed|null
+     */
     public function storage(string $key, $value = null)
     {
         if (!is_null($value)) {

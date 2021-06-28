@@ -11,7 +11,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use Snow\Technology\Technology;
+use Snow\Apple\Technology\Technology;
 
 trait TraitGuzzleRetry
 {

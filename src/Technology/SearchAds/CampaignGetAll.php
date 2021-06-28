@@ -1,24 +1,26 @@
 <?php
 
 
-namespace Snow\Technology\SearchAds;
+namespace Snow\Apple\Technology\SearchAds;
 
 
 class CampaignGetAll extends SearchAds
 {
-    private $url = 'https://api.searchads.apple.com/api/v4/campaigns';
+    const OPT_LIMIT = 'limit';
 
-    public function execute($offset = 0, $limit = 20, ...$params)
+    private $url = 'https://api.searchads.apple.com/api/v4/campaigns?limit=%d&offset=%d';
+
+    /**
+     * Notes: Get all Campaigns
+     * @param int $offset
+     * @param int|null $limit
+     * @param mixed ...$params
+     * @return mixed
+     * @throws SearchAdsException
+     */
+    public function execute($offset = 0, $limit = null, ...$params)
     {
-        try {
-            $url = sprintf("%s?limit=%s&offset=%s", $this->url, $limit, $offset);
-            $response = $this->quickClient()->get($url);
-            if ($response->getStatusCode() != 200) {
-                throw new SearchAdsException($response->getBody()->getContents(), $response->getStatusCode());
-            }
-            return json_decode($response->getBody()->getContents(), true);
-        } catch (\Throwable $t) {
-            throw new SearchAdsException($t->getMessage(), $t->getCode());
-        }
+        $limit = $this->getOption(self::OPT_LIMIT, $limit) ?: 20;
+        return $this->parseResponse($this->quickClient()->get(sprintf($this->url, $limit, $offset)));
     }
 }

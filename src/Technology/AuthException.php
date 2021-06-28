@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Snow\Technology;
+namespace Snow\Apple\Technology;
 
 
 class AuthException extends \Exception

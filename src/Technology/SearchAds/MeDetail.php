@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Snow\Technology\SearchAds;
+namespace Snow\Apple\Technology\SearchAds;
 
 
 use Snow\Apple\AppleInterface;
@@ -25,26 +25,31 @@ class MeDetail
         $this->apple = $apple;
     }
 
+    /**
+     * Notes: 发送请求
+     * @throws SearchAdsException
+     */
     protected function request()
     {
-        try {
-            $response = $this->getHttpClient(['verify' => false, 'timeout' => 3])->get($this->url, [
-                'headers' => ['Authorization' => $this->apple->getAuth()->getAuthorization()]
-            ]);
-            if ($response->getStatusCode() != 200) {
-                throw new SearchAdsException($response->getBody()->getContents(), $response->getStatusCode());
-            }
-            $data = json_decode($response->getBody()->getContents(), true);
-            if (empty($data['data']['userId']) || empty($data['data']['parentOrgId'])) {
-                throw new SearchAdsException($this->url . '接口数据解析失败');
-            }
-            $this->userId = $data['data']['userId'];
-            $this->parentOrgId = $data['data']['parentOrgId'];
-        } catch (\Throwable $t) {
-            throw new SearchAdsException($t->getMessage(), $t->getCode());
+        $response = $this->getHttpClient(['verify' => false, 'timeout' => 3])->get($this->url, [
+            'headers' => ['Authorization' => $this->apple->getAuth()->getAuthorization()]
+        ]);
+        if ($response->getStatusCode() != 200) {
+            throw new SearchAdsException($response->getBody()->getContents(), $response->getStatusCode());
         }
+        $data = json_decode($response->getBody()->getContents(), true);
+        if (json_last_error()) {
+            throw new SearchAdsException($this->url . '接口数据解析失败:' . json_last_error_msg());
+        }
+        $this->userId = $data['data']['userId'];
+        $this->parentOrgId = $data['data']['parentOrgId'];
     }
 
+    /**
+     * Notes: 获取userId
+     * @return mixed
+     * @throws SearchAdsException
+     */
     public function getUserId()
     {
         if (is_null($this->userId)) {
@@ -53,6 +58,11 @@ class MeDetail
         return $this->userId;
     }
 
+    /**
+     * Notes: 获取parentOrgId
+     * @return mixed
+     * @throws SearchAdsException
+     */
     public function getParentOrgId()
     {
         if (is_null($this->parentOrgId)) {
