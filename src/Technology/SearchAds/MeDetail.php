@@ -4,6 +4,7 @@
 namespace Snow\Apple\Technology\SearchAds;
 
 
+use GuzzleHttp\Exception\GuzzleException;
 use Snow\Apple\AppleInterface;
 use Snow\Apple\TraitGuzzleRetry;
 
@@ -11,18 +12,24 @@ class MeDetail
 {
     use TraitGuzzleRetry;
 
-    private $userId;
+    protected $userId;
 
-    private $parentOrgId;
+    protected $parentOrgId;
 
-    private $url = 'https://api.searchads.apple.com/api/v4/me';
+    protected $url = 'https://api.searchads.apple.com/api/v4/me';
 
     /** @var AppleInterface */
-    private $apple;
+    protected $apple;
 
-    public function __construct(AppleInterface $apple)
+    /**
+     * @var array
+     */
+    protected $option = [];
+
+    public function __construct(AppleInterface $apple, array $option = [])
     {
         $this->apple = $apple;
+        $this->option = $option;
     }
 
     /**
@@ -31,9 +38,14 @@ class MeDetail
      */
     protected function request()
     {
-        $response = $this->getHttpClient(['verify' => false, 'timeout' => 3])->get($this->url, [
-            'headers' => ['Authorization' => $this->apple->getAuth()->getAuthorization()]
-        ]);
+        try {
+            $response = $this->getHttpClient(array_merge(['verify' => false, 'timeout' => 30], $this->option))->get($this->url, [
+                'headers' => ['Authorization' => $this->apple->getAuth()->getAuthorization()]
+            ]);
+        } catch (GuzzleException $e) {
+            throw new SearchAdsException($e->getMessage(), $e->getCode());
+        }
+
         if ($response->getStatusCode() != 200) {
             throw new SearchAdsException($response->getBody()->getContents(), $response->getStatusCode());
         }

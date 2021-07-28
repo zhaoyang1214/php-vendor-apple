@@ -9,24 +9,54 @@ use Snow\Apple\Technology\TechnologyInterface;
 
 class Apple implements AppleInterface
 {
+    /**
+     * @var string
+     */
     private $privateKey;
 
+    /**
+     * @var string
+     */
     private $publicKey;
 
+    /**
+     * @var string
+     */
     private $clientId;
 
+    /**
+     * @var string
+     */
     private $teamId;
 
+    /**
+     * @var string
+     */
     private $keyId;
 
+    /**
+     * @var string
+     */
     private $audience;
 
+    /**
+     * @var string
+     */
     private $alg;
 
+    /**
+     * @var string
+     */
     protected $jwt;
 
+    /**
+     * @var int
+     */
     protected $issuedAtTimestamp;
 
+    /**
+     * @var int
+     */
     protected $expirationTimestamp;
 
     /** @var Oauth2Token */
