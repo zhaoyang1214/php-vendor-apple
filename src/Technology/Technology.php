@@ -13,9 +13,15 @@ abstract class Technology implements TechnologyInterface
 
     use TraitGuzzleRetry;
 
+    /**
+     * @var AppleInterface
+     */
     protected $apple;
 
-    protected $option;
+    /**
+     * @var array
+     */
+    protected $option = [];
 
     public function __construct(array $option = [])
     {

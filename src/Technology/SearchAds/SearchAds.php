@@ -22,7 +22,7 @@ abstract class SearchAds extends Technology implements SearchAdsInterface
     public function init()
     {
         // 初始化MeDetail服务，ASA接口都需要orgId
-        $this->getApple()->storage(MeDetail::class, new MeDetail($this->getApple()));
+        $this->getApple()->storage(MeDetail::class, new MeDetail($this->getApple(), $this->getOption()));
     }
 
     /**

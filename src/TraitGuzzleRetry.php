@@ -5,13 +5,11 @@ namespace Snow\Apple;
 
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Handler\CurlHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use Snow\Apple\Technology\Technology;
 
 trait TraitGuzzleRetry
 {
@@ -47,7 +45,7 @@ trait TraitGuzzleRetry
      */
     protected function retryDecider()
     {
-        return function ($retries, Request $request, Response $response = null, RequestException $exception = null) {
+        return function ($retries, Request $request, Response $response = null, $exception = null) {
             if ($retries >= $this->getHttpMaxRetries()) {
                 return false;
             }

@@ -27,7 +27,7 @@ class Oauth2Token implements AuthInterface
         'grant_type' => 'client_credentials',
         'scope' => 'searchadsorg',
         'verify' => false,
-        'timeout' => 3,
+        'timeout' => 30,
     ];
 
     public function __construct(AppleInterface $apple, array $option = [])
