@@ -18,7 +18,7 @@ class CampaignCreate extends SearchAds
      * @throws SearchAdsException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function execute($campaign, ...$params)
+    public function execute($campaign = [], ...$params)
     {
         return $this->parseResponse($this->quickClient()->post($this->url, ['json' => $campaign]));
     }

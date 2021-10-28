@@ -17,7 +17,7 @@ class CampaignFind extends SearchAds
      * @throws SearchAdsException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function execute($Selector, ...$params)
+    public function execute($Selector = null, ...$params)
     {
         return $this->parseResponse($this->quickClient()->post($this->url, ['json' => $Selector]));
     }
