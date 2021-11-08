@@ -77,7 +77,7 @@ trait TraitGuzzleRetry
      * @param bool $share
      * @return Client
      */
-    public function getHttpClient(array $config = [], $share = true): Client
+    public function getHttpClient(array $config = [], bool $share = false): Client
     {
         $cf = md5(serialize($config));
         if ($share && isset($this->httpClient[$cf])) {

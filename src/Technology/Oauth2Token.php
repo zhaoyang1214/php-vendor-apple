@@ -48,7 +48,7 @@ class Oauth2Token implements AuthInterface
      */
     public function getAuthorization(bool $force = false)
     {
-        if ($force || is_null($this->accessToken) || time() - $this->timestamp + 100 >= $this->expiresIn) {
+        if ($force || is_null($this->accessToken) || time() - $this->timestamp >= $this->expiresIn - 600) {
             $params = [
                 'grant_type' => $this->option['grant_type'],
                 'scope' => $this->option['scope'],
@@ -56,9 +56,9 @@ class Oauth2Token implements AuthInterface
                 'client_secret' => $this->apple->getJwt(),
             ];
             $url = $this->url . '?' . http_build_query($params);
-            $this->timestamp = time();
             $response = $this->getHttpClient(['verify' => $this->option['verify'], 'timeout' => $this->option['timeout']])
                 ->post($url);
+            $this->timestamp = time();
             if ($response->getStatusCode() != 200) {
                 throw new AuthException($response->getBody()->getContents(), $response->getStatusCode());
             }
